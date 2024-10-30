@@ -10,6 +10,10 @@ class Membre(models.Model):
     telephone = models.CharField(max_length=15)
     date_inscription = models.DateField(auto_now_add=True)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+        self.emprunt_set = None
+
     def __str__(self):
         return f"{self.prenom} {self.nom}"
 
@@ -35,11 +39,11 @@ class Media(models.Model):
     auteur = models.CharField(max_length=100, blank=True, null=True)  # Auteur pour livres
     realisateur = models.CharField(max_length=100, blank=True, null=True)  # Réalisateur pour DVDs
     artiste = models.CharField(max_length=100, blank=True, null=True)  # Artiste pour CDs
-    fabricant = models.CharField(max_length=100, blank=True, null=True)  # Fabricant pour jeux de plateau
+    createur = models.CharField(max_length=100, blank=True, null=True)  # Fabricant pour jeux de plateau
     disponible = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.title} ({self.media_type})"
+        return f"{self.titre} ({self.type_media})"
 
     def is_disponible(self):
         return self.disponible
