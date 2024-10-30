@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Médias</title>
+</head>
+<body>
+  <h2>Liste des Médias</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Titre</th>
+      <th>Type</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for media in medias %}
+    <tr>
+    <td>{{ media.id }}</td>
+    <td>{{ media.titre }}</td>
+    <td>
+      {% if media.disponible %}
+        Disponible
+      {% else %}
+        Indisponible
+      {% endif %}
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>
