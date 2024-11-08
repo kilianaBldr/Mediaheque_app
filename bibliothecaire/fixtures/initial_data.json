@@ -1,0 +1,71 @@
+[
+    {
+        "model": "bibliothecaire.membre",
+        "pk": 1,
+        "fields": {
+            "nom": "Dupont",
+            "prenom": "Jean",
+            "email": "jean.dupont@example.com",
+            "telephone": "01.02.02.02.05",
+            "date_inscription": "2023-10-10"
+        }
+    },
+    {
+        "model": "bibliothecaire.membre",
+        "pk": 2,
+        "fields": {
+            "nom": "Martin",
+            "prenom": "Claire",
+            "email": "claire.martin@example.com",
+            "telephone": "01.02.02.02.05",
+            "date_inscription": "2023-10-12"
+        }
+    },
+    {
+        "model": "bibliothecaire.media",
+        "pk": 1,
+        "fields": {
+            "titre": "Le Petit Prince",
+            "type_media": "Livre",
+            "disponible": true
+        }
+    },
+    {
+        "model": "bibliothecaire.media",
+        "pk": 2,
+        "fields": {
+            "titre": "Inception",
+            "type_media": "DVD",
+            "disponible": true
+        }
+    },
+    {
+        "model": "bibliothecaire.media",
+        "pk": 3,
+        "fields": {
+            "titre": "Monopoly",
+            "type_media": "Jeu de Plateau",
+            "disponible": false
+        }
+    },
+    {
+        "model": "bibliothecaire.emprunt",
+        "pk": 1,
+        "fields": {
+            "membre": 1,
+            "media": 1,
+            "date_emprunt": "2023-10-15",
+            "date_retour": null
+        }
+    },
+    {
+        "model": "bibliothecaire.emprunt",
+        "pk": 2,
+        "fields": {
+            "membre": 2,
+            "media": 2,
+            "date_emprunt": "2023-10-16",
+            "date_retour": null
+        }
+    }
+]
