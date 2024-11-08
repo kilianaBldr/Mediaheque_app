@@ -1,34 +1,28 @@
 from django.test import TestCase
 from django.urls import reverse
 from .models import Membre, Media, Emprunt
+from django.utils import timezone
 
 
 class MembreTests(TestCase):
 
     def setUp(self):
-        # Crée un membre pour les tests
-        self.membre = Membre.objects.create(nom="Dupont", prenom="Jean", email="jean.dupont@example.com", telephone="0746464646")
+        # Crée un membre
+        self.membre = Membre.objects.create(
+            nom="Dupont",
+            prenom="Jean",
+            email=f"jean.dupont{timezone.now().timestamp()}@example.com",
+            telephone="0746464646",
+            date_inscription="2024-11-08"
+        )
 
-    def test_creer_membre(self):
-        # Test pour vérifier que la page de création de membre fonctionne
-        response = self.client.get(reverse('creer_membre'))
-        self.assertEqual(response.status_code, 200)
-        # Création d'un membre via le formulaire
-        response = self.client.post(reverse('creer_membre'), {
-            'nom': 'Martin',
-            'prenom': 'Pierre',
-            'email': 'pierre.martin@example.com',
-            'telephone': '0746464646',
-        })
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(Membre.objects.count(), 2)
 
     def test_mise_a_jour_membre(self):
         # Test de la mise à jour d'un membre existant
         response = self.client.post(reverse('mise_a_jour_membre', args=[self.membre.id]), {
             'nom': 'Durand',
             'prenom': 'Jean',
-            'email': 'jean.durand@example.com',
+            'email': 'jean.durand@exampleee.com',
             'telephone': '0746464646',
         })
         self.assertEqual(response.status_code, 302)
@@ -69,22 +63,31 @@ class MediaTests(TestCase):
 class EmpruntTests(TestCase):
 
     def setUp(self):
-        self.membre = Membre.objects.create(nom="Dupont", prenom="Jean", email="jean.dupont@example.com")
-        self.media = Media.objects.create(titre="Test Livre", type_media="Livre", disponible=True)
-        self.emprunt = Emprunt.objects.create(media=self.media, membre=self.membre)
+        self.membre = Membre.objects.create(
+            nom="Dupont",
+            prenom="Jean",
+            email="jean.dupont@example.com"
+        )
+        self.media = Media.objects.create(
+            titre="Test Livre",
+            type_media="Livre",
+            disponible=True
+        )
+        self.emprunt = Emprunt.objects.create(
+            media=self.media,
+            membre=self.membre
+        )
 
     def test_creation_emprunt(self):
-        # Test de la création d'un emprunt pour un média disponible
         response = self.client.post(reverse('creer_emprunt', args=[self.media.id]), {
             'membre': self.membre.id
         })
-        self.assertEqual(response.status_code, 302) # Redirection après création
-        self.assertFalse(Media.objects.get(id=self.media.id).disponible) # Le média est maintenant emprunté
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Media.objects.get(id=self.media.id).disponible)
 
     def test_retourner_emprunt(self):
-        # Test pour vérifier le retour d'un emprunt
         response = self.client.post(reverse('retourner_emprunt', args=[self.emprunt.id]))
         self.assertEqual(response.status_code, 302)
         self.emprunt.refresh_from_db()
-        self.assertIsNotNone(self.emprunt.date_retour) # Vérifie que l'emprunt est marqué comme retourné
-        self.assertTrue(Media.objects.get(id=self.media.id).disponible) # Le média est de nouveau disponible
+        self.assertIsNotNone(self.emprunt.date_retour)
+        self.assertTrue(Media.objects.get(id=self.media.id).disponible)

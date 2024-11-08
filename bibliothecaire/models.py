@@ -7,12 +7,9 @@ class Membre(models.Model):
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
-    telephone = models.CharField(max_length=15)
+    telephone = models.CharField(max_length=15, blank=True, null=True)
     date_inscription = models.DateField(auto_now_add=True)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(args, kwargs)
-        self.emprunt_set = None
 
     def __str__(self):
         return f"{self.prenom} {self.nom}"
